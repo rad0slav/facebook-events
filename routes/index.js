@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Promise = require("bluebird");
 var rp = require('request-promise');
+var path = require('path');
 
 function calculateStarttimeDifference(currentTime, dataString) {
   return (new Date(dataString).getTime()-(currentTime*1000))/1000;
@@ -72,7 +73,7 @@ function haversineDistance(coords1, coords2, isMiles) {
 }
 
 router.get('/', function(req, res, next) {
-  res.json({ "message": "Welcome to the Facebook Event Search service!" });
+  res.sendFile(path.join(__dirname + '/../public/index.html'));
 });
 
 router.get('/events', function(req, res, next) {

@@ -2,13 +2,17 @@ var express = require('express');
 var logger = require('morgan');
 var debug = require('debug')('fb-event-location-search:server');
 var http = require('http');
+var path = require('path');
 
 var routes = require('./routes/index');
 
 var app = express();
 
+
 app.use(logger('dev'));
 app.use('/', routes);
+app.use('/lib', express.static(__dirname + '/node_modules/'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -50,7 +54,9 @@ var server = http.createServer(app);
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port);
+server.listen(port, function () {
+    console.log('listening on ' + port + '...');
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

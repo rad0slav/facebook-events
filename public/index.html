@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html ng-app="cufarul">
+<head>
+    <title>Cufarul</title>
+
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/bootstrap.min.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
+
+</head>
+<body style="margin-top: 100px">
+
+<div class="container">
+    <!-- Navbar -->
+
+
+    <div class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!--<div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse"
+                        data-target=".navbar-inverse-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>-->
+            <div class="navbar-collapse collapse navbar-default-collapse">
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control col-lg-8" placeholder="Search">
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row text-center" ng-controller="EventsController">
+        <div class="col-md-8 col-md-offset-2 col-sm-6 hero-feature" ng-repeat="event in events">
+            <div class="thumbnail">
+                <img ng-src="{{event.eventCoverPicture}}" alt="{{event.eventName}}">
+
+                <div class="caption">
+                    <h3>{{event.eventName}}</h3>
+                    <!--<div style="overflow: hidden">{{event.eventDescription}}</div>-->
+                    <p>
+                        <a href="#" class="btn btn-primary">Details</a> <a href="#" class="btn btn-default">More
+                        Info</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="lib/jquery/dist/jquery.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.2.5.js"></script>
+    <script src="app.js"></script>
+    <script src="scripts/events/eventsController.js"></script>
+    <script src="scripts/carousel/carouselController.js"></script>
+</body>
+</html>
