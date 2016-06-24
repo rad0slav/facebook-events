@@ -15,10 +15,16 @@ module.controller('EventsController', ['$scope', '$http', '$resource', function(
             lng: '26.102170',
             distance: '1000',
             sort: 'venue',
-            access_token: 'fff'
+            access_token: ''
         })
         .$promise.then(function(events){
-            console.log(events.events);
             $scope.events = events.events;
-        })
+        });
+
+    $scope.truncateDescription = function(description){
+        if (description.length > 200)
+            return description.substring(0, 200) + '...';
+        else
+            return description;
+    }
 }]);
