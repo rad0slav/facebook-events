@@ -3,6 +3,16 @@ var router = express.Router();
 var Promise = require("bluebird");
 var rp = require('request-promise');
 var path = require('path');
+var mongoose = require('mongoose');
+var mongodbUri = process.env.MONGOLAB_URI;
+
+var scrapedEvents = [];
+
+mongoose.connect(mongodbUri);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
+
 
 function calculateStarttimeDifference(currentTime, dataString) {
   return (new Date(dataString).getTime()-(currentTime*1000))/1000;
@@ -195,5 +205,71 @@ router.get('/events', function(req, res, next) {
   }
 
 });
+
+db.on('open', function callback() {
+  console.log('db connection opened');
+  function addEvents() {
+    var eventsCollection = {};
+    var exists = false;
+    db.db.listCollections().toArray(function (error, names) {
+      if (error) {
+        console.log('Error: ' + error);
+      } else {
+        eventsCollection = names.filter(function (obj) {
+          return obj.name === 'events'
+        });
+        console.log(eventsCollection);
+        if(addFileEvents.length === 0){
+          addFileEvents();
+          console.log('added');
+        } else {
+          console.log('already exists');
+        }
+      }
+    });
+    return exists;
+  }
+
+  function addFileEvents() {
+    var eventSchema = mongoose.Schema({
+      "venueId": String,
+      "venueName": String,
+      "venueCoverPicture": String,
+      "venueProfilePicture": String,
+      "venueLocation": {
+        "city": String,
+        "country": String,
+        "latitude": Number,
+        "longitude": Number,
+        "street": String,
+        "zip": String
+      },
+      "eventId": String,
+      "eventName": String,
+      "eventCoverPicture": String,
+      "eventProfilePicture": String,
+      "eventDescription": String,
+      "eventStarttime": String,
+      "eventDistance": String,
+      "eventTimeFromNow": Number,
+      "eventStats": {
+        "attendingCount": Number,
+        "declinedCount": Number,
+        "maybeCount": Number,
+        "noreplyCount": Number
+      }
+    });
+    // Store Event documents in a collection called "events"
+    var Event = mongoose.model('events', eventSchema);
+    var currentEvent = {};
+    events.forEach(function writeToDb(event) {
+      currentEvent = new Event(event);
+      currentEvent.save();
+    });
+  }
+
+  addEvents();
+});
+
 
 module.exports = router;
