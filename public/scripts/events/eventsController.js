@@ -15,7 +15,7 @@ module.controller('EventsController', ['$scope', '$http', '$resource', function(
             lng: '26.102170',
             distance: '1000',
             sort: 'venue',
-            access_token: ''
+            access_token: 'FB_TOKEN'
         })
         .$promise.then(function(events){
             $scope.events = events.events;
